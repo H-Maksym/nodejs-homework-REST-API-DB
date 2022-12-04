@@ -7,9 +7,10 @@ const getAll = async (req, res, next) => {
   const { _id: owner } = req.user;
   let { page = 1, limit = 20, favorite } = req.query;
 
-  if (favorite !== true || favorite !== false) {
-    next(HTTPError(400, `Please select a valid favorite value`));
-  }
+  // FIXME add validate on JOI
+  // if (favorite.toString() !== 'true' || favorite.toString() !== 'false') {
+  //   next(HTTPError(400, `Please select a valid favorite value`));
+  // }
 
   const countTotal = await Contact.find({ owner }).count();
 
@@ -35,7 +36,15 @@ const getAll = async (req, res, next) => {
       limit,
     }
   ).populate('owner', 'email subscription');
-  res.json({ ...result, 'Total count': countTotal, page, limit, favorite });
+  res.json({
+    ...result,
+    'Total count': countTotal,
+    Count: countSelected,
+    'Total page': lastPage,
+    page,
+    limit,
+    favorite,
+  });
 };
 
 module.exports = getAll;

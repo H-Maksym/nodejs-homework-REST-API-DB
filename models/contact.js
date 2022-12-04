@@ -34,15 +34,30 @@ const contactSchema = new Schema(
 
 contactSchema.post('save', handleSaveErrors);
 
+// TODO add validate with JOI
 const addSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().required(),
   phone: Joi.string().required(),
-  favorite: Joi.boolean(),
+  favorite: Joi.boolean()
+    // .strict()
+    // .truthy('true')
+    // .falsy('false')
+    // .sensitive()
+    .error(new Error('Subscription must be one of [true,false]')),
+  // .valid(true, false)
+  // .error(new Error('Subscription must be one of [true,false]')),
 });
 
 const updateFavoriteSchema = Joi.object({
-  favorite: Joi.boolean().required(),
+  favorite: Joi.boolean()
+    .required()
+    // забороняє перетворення типів
+    .strict()
+    // .truthy('true')
+    // .falsy('false')
+    // .sensitive()
+    .error(new Error('Subscription must be one of [true,false]')),
 });
 
 const schemas = {
