@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const ctrl = require('../../controllers/auth');
 const { ctrlWrapper } = require('../../helpers');
 const { validateBody, authenticate, upload } = require('../../middlewars');
@@ -35,7 +36,6 @@ router.patch(
 );
 
 // get user avatars
-// router.get('/:avatarsURL');
-// router.get('/avatars/:avatarsURL', ctrlWrapper(ctrl.getAvatar));
+router.get('/:avatarsURL', ctrlWrapper(ctrl.getAvatar));
 
 module.exports = router;

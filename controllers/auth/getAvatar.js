@@ -1,15 +1,16 @@
-const { User } = require('../../models/user');
 const path = require('path');
-// const { HTTPError } = require('../../helpers');
+const { HTTPError } = require('../../helpers');
+const fs = require('fs/promises');
 
 const getAvatar = async (req, res, next) => {
-  //   const { avatarsURL } = req.params;
-  // const { _id } = req.user;
-  console.log('hello');
-  const { avatarURL } = await User.findById({ _id: '6387911fb2a9dd8a8104b037' }, 'avatarURL');
-  //   res.set('Content-Type', 'image/jpeg');
-  res.json({ avatarURL });
-  //   res.sendFile(path.join(__dirname, '../../', 'public', avatarURL));
+  const { avatarsURL } = req.params;
+  const file = path.join(__dirname, '../../public/avatars', avatarsURL);
+  try {
+    await fs.readFile(file);
+    res.sendFile(file);
+  } catch (error) {
+    next(HTTPError(400, `file ${avatarsURL} not exist`));
+  }
 };
 
 module.exports = getAvatar;
