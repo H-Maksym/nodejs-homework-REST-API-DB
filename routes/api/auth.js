@@ -35,7 +35,7 @@ router.patch(
 );
 
 // get user avatars
-router.get('/:avatarsURL');
+// router.get('/:avatarsURL');
 // router.get('/avatars/:avatarsURL', ctrlWrapper(ctrl.getAvatar));
 
 module.exports = router;
