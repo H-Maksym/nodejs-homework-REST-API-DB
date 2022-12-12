@@ -26,6 +26,7 @@ const userSchema = new Schema(
       default: 'starter',
     },
     token: { type: String, default: '' },
+    avatarURL: { type: String, require: true },
   },
   { versionKey: false }
 );
@@ -58,10 +59,17 @@ const updateSubscription = Joi.object({
     .error(new Error('Subscription must be one of [starter, pro, business]')),
 });
 
+// TODO add validation for extension file
+const updateAvatar = Joi.object({
+  avatar: Joi.string(),
+  // .error(new Error('Avatar must be one of [.jpeg, .png, .jpg]')),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
   updateSubscription,
+  updateAvatar,
 };
 
 const User = model('user', userSchema);
