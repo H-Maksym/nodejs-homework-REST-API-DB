@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const ctrl = require('../../controllers/auth');
 const { ctrlWrapper } = require('../../helpers');
 const { validateBody, authenticate, upload } = require('../../middlewars');
@@ -8,6 +7,12 @@ const router = express.Router();
 
 // sign-up
 router.post('/register', validateBody(schemas.registerSchema), ctrlWrapper(ctrl.register));
+
+// verify user
+router.get('/verify/:verificationToken', ctrlWrapper(ctrl.verify));
+
+// resend verify user
+router.post('/verify', validateBody(schemas.verifyEmailSchema), ctrlWrapper(ctrl.resendEmail));
 
 // sign-in
 router.post('/login', validateBody(schemas.loginSchema), ctrlWrapper(ctrl.login));
@@ -22,7 +27,7 @@ router.get('/logout', authenticate, ctrlWrapper(ctrl.logout));
 router.patch(
   '/',
   authenticate,
-  validateBody(schemas.updateSubscription),
+  validateBody(schemas.updateSubscriptionSchema),
   ctrlWrapper(ctrl.updateSubscription)
 );
 
@@ -31,7 +36,7 @@ router.patch(
   '/avatars',
   authenticate,
   upload.single('avatar'),
-  validateBody(schemas.updateAvatar),
+  validateBody(schemas.updateAvatarSchema),
   ctrlWrapper(ctrl.updateAvatar)
 );
 

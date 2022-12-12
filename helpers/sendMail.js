@@ -1,7 +1,7 @@
 const sgMail = require('@sendgrid/mail');
 const HTTPError = require('./HttpError');
 
-const { SENDGRID_API_KEY } = process.env;
+const { SENDGRID_API_KEY, EMAIL_ADMIN } = process.env;
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 const sendMail = async data => {
@@ -9,7 +9,7 @@ const sendMail = async data => {
     ...data,
     from: {
       name: 'Verify email',
-      email: 'mgolovachuk@gmail.com',
+      email: EMAIL_ADMIN,
     },
   };
   try {
