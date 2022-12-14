@@ -1,7 +1,6 @@
 const path = require('path');
 const { HTTPError } = require('../../helpers');
 const fs = require('fs/promises');
-const { runInNewContext } = require('vm');
 
 const getAvatar = async (req, res, next) => {
   const { avatarsURL } = req.params;

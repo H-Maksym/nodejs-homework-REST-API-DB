@@ -1,8 +1,7 @@
 const path = require('path');
 const fs = require('fs/promises');
-const Jimp = require('jimp');
 const { User } = require('../../models/user');
-const { HTTPError } = require('../../helpers');
+const { HTTPError, resizeImage } = require('../../helpers');
 
 const avatarsDir = path.join(__dirname, '../../', 'public', 'avatars');
 
@@ -19,10 +18,11 @@ const updateAvatar = async (req, res, next) => {
 
   // INFO Check rename file, when error delete file and return response error.
   try {
-    Jimp.read(tempUpload, (err, image) => {
-      if (err) HTTPError(400);
-      image.resize(250, 250).quality(60).write(resultUpload);
-    });
+    resizeImage(tempUpload, resultUpload);
+    //   Jimp.read(tempUpload, (err, image) => {
+    //     if (err) HTTPError(400);
+    //     image.resize(250, 250).quality(60).write(resultUpload);
+    //   });
     // await fs.rename(tempUpload, resultUpload);
   } catch (error) {
     return next(HTTPError(400, 'Something went wrong!'));
