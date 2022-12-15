@@ -27,6 +27,14 @@ const userSchema = new Schema(
     },
     token: { type: String, default: '' },
     avatarURL: { type: String, require: true },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
   },
   { versionKey: false }
 );
@@ -53,23 +61,28 @@ const loginSchema = Joi.object({
     .messages({ 'string.min': 'Password length must be at least 6 characters long' }),
 });
 
-const updateSubscription = Joi.object({
+const updateSubscriptionSchema = Joi.object({
   subscription: Joi.string()
     .valid(...subscriptionStatus)
     .error(new Error('Subscription must be one of [starter, pro, business]')),
 });
 
 // TODO add validation for extension file
-const updateAvatar = Joi.object({
+const updateAvatarSchema = Joi.object({
   avatar: Joi.string(),
   // .error(new Error('Avatar must be one of [.jpeg, .png, .jpg]')),
+});
+
+const verifyEmailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required().error(new Error('Not valid email')),
 });
 
 const schemas = {
   registerSchema,
   loginSchema,
-  updateSubscription,
-  updateAvatar,
+  updateSubscriptionSchema,
+  updateAvatarSchema,
+  verifyEmailSchema,
 };
 
 const User = model('user', userSchema);

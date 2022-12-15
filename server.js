@@ -13,14 +13,14 @@ const connectToDB = async () => {
   try {
     await mongoose.connect(DB_HOST);
     app.listen(PORT, () => {
-      console.log('Database MongoDB/contacts connection successful');
+      console.log('Database MongoDB/contacts connection successful!');
     });
   } catch (error) {
     console.log(error.message);
     process.exit(1);
   }
 };
-
+console.log('Hello Max!');
 // **************************************************
 //! Connect to DB
 connectToDB();
